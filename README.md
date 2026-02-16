@@ -1,8 +1,15 @@
 # Livicity CWVS / AWVS — Reference Package (Public)
+Repository: https://github.com/Hybrismannen/livicity-cwvs-reference
 
 Open, auditable child-impact toolkit (CWVS/AWVS) that converts mixed evidence into wellbeing vector scans with explainability artifacts and provenance. Includes an **NDC (neurodevelopmental conditions) accessibility filter**, human-review gates, and a transparency dashboard concept to strengthen accountability in public decisions.
 
 This repository is a **public reference package**: schemas, governance artifacts, synthetic examples, and a minimal runnable reference demo. It is designed to support CIA/CRIA workflows with **inspectable outputs**, not opaque judgments.
+
+## Contact
+Barnombudet (Child Rights Organization, Sweden)  
+Email: [hej@barnombudet.se, linus.fast@barnombudet.se]  
+Website: [[ADD OFFICIAL URL](https://barnombudet.se/)]
+Repository: https://github.com/Hybrismannen/livicity-cwvs-reference
 
 ---
 
@@ -26,6 +33,9 @@ This repository is a **public reference package**: schemas, governance artifacts
 **Reference demo (Python)**
 - `src/cwvs_engine.py` — minimal scan engine + explainability card generator
 - `src/run_demo.py` — reads example input and writes example outputs
+Input example: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main/examples/synthetic-input.json  
+Scan output: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main/examples/example-output-scan.json  
+Explainability cards: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main/examples/example-output-explainability-cards.json
 
 ---
 
@@ -47,4 +57,4 @@ Run locally (Python 3.10+ recommended):
 ```bash
 python -m src.run_demo
 
-::contentReference[oaicite:0]{index=0} https://barnombudet.se/
+::contentReference[oaicite:0]{index=0}
