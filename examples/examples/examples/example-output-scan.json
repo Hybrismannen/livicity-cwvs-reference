@@ -1,0 +1,12 @@
+{
+  "scan_id": "cwvs-demo-001",
+  "timestamp": "2026-02-16T12:00:00Z",
+  "subject_scope": "policy",
+  "human_review_required": true,
+  "vectors": [
+    { "vector_id": "V01", "vector_name": "Safety and Protection", "signal_level": "unknown", "evidence_count": 1 },
+    { "vector_id": "V02", "vector_name": "Education and Learning", "signal_level": "moderate", "evidence_count": 2 },
+    { "vector_id": "V03", "vector_name": "Mental and Emotional Wellbeing", "signal_level": "high", "evidence_count": 1 }
+  ],
+  "outputs": { "radar_ready": true, "explainability_cards_count": 3 }
+}
