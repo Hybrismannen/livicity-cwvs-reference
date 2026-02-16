@@ -46,3 +46,5 @@ Run locally (Python 3.10+ recommended):
 
 ```bash
 python -m src.run_demo
+
+::contentReference[oaicite:0]{index=0} https://barnombudet.se/
