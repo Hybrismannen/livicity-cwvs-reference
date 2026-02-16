@@ -37,6 +37,13 @@ Input example: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main
 Scan output: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main/examples/example-output-scan.json  
 Explainability cards: https://github.com/Hybrismannen/livicity-cwvs-reference/blob/main/examples/example-output-explainability-cards.json
 
+## Demo (inspectable artifacts)
+Because runtime execution may not be available in all environments, this repo includes **pre-generated synthetic outputs**:
+
+- Input example: /examples/synthetic-input.json  
+- Scan output: /examples/example-output-scan.json  
+- Explainability cards: /examples/example-output-explainability-cards.json
+
 ---
 
 ## What this is NOT
