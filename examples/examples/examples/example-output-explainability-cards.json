@@ -1,0 +1,73 @@
+[
+  {
+    "vector_id": "V01",
+    "vector_name": "Safety and Protection",
+    "signal_level": "unknown",
+    "claim": "Current signal is 'unknown' for 'Safety and Protection'.",
+    "based_on": [
+      {
+        "source_level": "L3",
+        "source_ref": "Municipal policy draft v1",
+        "summary": "No explicit safeguarding impact analysis included.",
+        "uncertainty": "High; missing stakeholder input."
+      }
+    ],
+    "missing_data_prompts": [
+      "Clarify evidence to reduce uncertainty for 'Safety and Protection'.",
+      "Add source references for all evidence items."
+    ],
+    "human_review_required": true,
+    "notes": [
+      "This is decision-support only.",
+      "No automated decisions; human review is mandatory where flagged."
+    ]
+  },
+  {
+    "vector_id": "V02",
+    "vector_name": "Education and Learning",
+    "signal_level": "moderate",
+    "claim": "Current signal is 'moderate' for 'Education and Learning'.",
+    "based_on": [
+      {
+        "source_level": "L2",
+        "source_ref": "Workshop notes (synthetic)",
+        "summary": "Potential increase in barriers for participation without accommodations.",
+        "uncertainty": "Medium; depends on implementation."
+      },
+      {
+        "source_level": "L4",
+        "source_ref": "National guidance summary (synthetic)",
+        "summary": "Best-practice suggests early participation design reduces exclusion.",
+        "uncertainty": "Low."
+      }
+    ],
+    "missing_data_prompts": [],
+    "human_review_required": false,
+    "notes": [
+      "This is decision-support only.",
+      "No automated decisions; human review is mandatory where flagged."
+    ]
+  },
+  {
+    "vector_id": "V03",
+    "vector_name": "Mental and Emotional Wellbeing",
+    "signal_level": "high",
+    "claim": "Current signal is 'high' for 'Mental and Emotional Wellbeing'.",
+    "based_on": [
+      {
+        "source_level": "L2",
+        "source_ref": "Youth input summary (synthetic)",
+        "summary": "Reported stress increase risk if change reduces predictability and support.",
+        "uncertainty": "Medium; sample limited."
+      }
+    ],
+    "missing_data_prompts": [
+      "Add broader participation input to validate reported impacts."
+    ],
+    "human_review_required": true,
+    "notes": [
+      "This is decision-support only.",
+      "No automated decisions; human review is mandatory where flagged."
+    ]
+  }
+]
