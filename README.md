@@ -8,7 +8,7 @@ This repository is a **public reference package**: schemas, governance artifacts
 ## Contact
 Barnombudet (Child Rights Organization, Sweden)  
 Email: [hej@barnombudet.se, linus.fast@barnombudet.se]  
-Website: [[ADD OFFICIAL URL](https://barnombudet.se/)]
+Website: [(https://barnombudet.se/)]
 Repository: https://github.com/Hybrismannen/livicity-cwvs-reference
 
 ---
