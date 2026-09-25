@@ -1,1 +1,9 @@
-{"schema":"cdx.system-binding/v1.0","authority_ref":"CDX-SYS-001","law_id":"CDX-LAW-001","binding_state":"BOUND_PENDING_RUNTIME_INTEGRATION"}
+{
+  "schema": "cdx.system-binding/v1.0",
+  "authority_ref": "CDX-SYS-001",
+  "law_id": "CDX-LAW-001",
+  "binding_state": "BOUND_CI_MONITORED",
+  "binding_audit_workflow": ".github/workflows/conductellence-binding-audit.yml",
+  "runtime_integration_state": "NOT_VERIFIED",
+  "updated_at": "2026-09-25"
+}
