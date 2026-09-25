@@ -1,0 +1,3189 @@
+{
+  "schema": "cdx.control-registry/v1.0",
+  "law_id": "CDX-LAW-001",
+  "policy_version": "1.0.0",
+  "default_behavior": "DENY_ON_CONTROL_ERROR",
+  "controls": [
+    {
+      "control_id": "CDX-CTL-01-04",
+      "section_id": "CDX-LAW-001-01-04",
+      "title": "Presumption against implicit authority",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "AUTHORITY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "authority_ref"
+          },
+          {
+            "op": "exists",
+            "path": "mandate_ref"
+          }
+        ]
+      },
+      "description": "Consequential action requires explicit authority and mandate.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "AUTHORITY",
+            "authority_ref": "HUM-1",
+            "mandate_ref": "M-1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "AUTHORITY",
+            "authority_ref": null,
+            "mandate_ref": null
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-REG-001",
+      "section_id": "CDX-LAW-001-03-01",
+      "title": "Registration duty",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SYSTEM_ADMISSION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "registered",
+        "value": true
+      },
+      "description": "Material system/principal must be registered.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "registered": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "registered": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-REPO-001",
+      "section_id": "CDX-LAW-001-03-02",
+      "title": "Repository backlink",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SYSTEM_ADMISSION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "exists",
+        "path": "conductellence_authority_ref"
+      },
+      "description": "Governed repository/system must backlink canonical Conductellence authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "conductellence_authority_ref": "CDX-SYS-001"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "conductellence_authority_ref": null
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-03-03",
+      "section_id": "CDX-LAW-001-03-03",
+      "title": "Inventory of material dependencies",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SYSTEM_ADMISSION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "exists",
+        "path": "dependencies"
+      },
+      "description": "Material dependency inventory must exist.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "dependencies": []
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "dependencies": null
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-03-05",
+      "section_id": "CDX-LAW-001-03-05",
+      "title": "Discovery of shadow assets",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SYSTEM_ADMISSION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "subset",
+        "path": "discovered_assets",
+        "of_path": "registered_assets"
+      },
+      "description": "Discovered assets must be registered.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "discovered_assets": [
+              "a"
+            ],
+            "registered_assets": [
+              "a",
+              "b"
+            ]
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SYSTEM_ADMISSION",
+            "discovered_assets": [
+              "x"
+            ],
+            "registered_assets": [
+              "a"
+            ]
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-04-01",
+      "section_id": "CDX-LAW-001-04-01",
+      "title": "Principal classes",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "IDENTITY_AUTHORITY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "in",
+        "path": "principal_class",
+        "values": [
+          "HUMAN",
+          "AGENT",
+          "SERVICE",
+          "AUTOMATION",
+          "MODEL",
+          "TOOL",
+          "CONNECTOR",
+          "REPOSITORY",
+          "DATASET",
+          "WORKFLOW",
+          "APPLICATION",
+          "PROVIDER"
+        ]
+      },
+      "description": "Principal class must be canonical.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_class": "AGENT"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_class": "UNKNOWN"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-AUTH-001",
+      "section_id": "CDX-LAW-001-04-02",
+      "title": "Identity is not authority",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "IDENTITY_AUTHORITY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "principal_id"
+          },
+          {
+            "op": "exists",
+            "path": "authority_ref"
+          }
+        ]
+      },
+      "description": "Identity and authority must be separately represented.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_id": "A1",
+            "authority_ref": "AUTH1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_id": "A1"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-04-04",
+      "section_id": "CDX-LAW-001-04-04",
+      "title": "Model non-identity",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "IDENTITY_AUTHORITY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "principal_id"
+          },
+          {
+            "op": "exists",
+            "path": "model_id"
+          },
+          {
+            "op": "not_equals",
+            "path": "principal_id",
+            "other_path": "model_id"
+          }
+        ]
+      },
+      "description": "Model identity must not substitute for governed principal identity.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_id": "AG1",
+            "model_id": "GPT-X"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "principal_id": "GPT-X",
+            "model_id": "GPT-X"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-04-05",
+      "section_id": "CDX-LAW-001-04-05",
+      "title": "Anti-impersonation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "IDENTITY_AUTHORITY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals_path",
+        "path": "asserted_identity",
+        "other_path": "authenticated_identity"
+      },
+      "description": "Asserted and authenticated identity must match.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "asserted_identity": "A",
+            "authenticated_identity": "A"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "IDENTITY_AUTHORITY",
+            "asserted_identity": "A",
+            "authenticated_identity": "B"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-05-02",
+      "section_id": "CDX-LAW-001-05-02",
+      "title": "Capability form",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "capability.action"
+          },
+          {
+            "op": "exists",
+            "path": "capability.resource"
+          },
+          {
+            "op": "exists",
+            "path": "capability.scope"
+          }
+        ]
+      },
+      "description": "Capability must be explicit and typed.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "capability": {
+              "action": "READ",
+              "resource": "R",
+              "scope": "S"
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "capability": {
+              "action": "READ"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-05-03",
+      "section_id": "CDX-LAW-001-05-03",
+      "title": "Least privilege",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "subset",
+        "path": "requested_capabilities",
+        "of_path": "granted_capabilities"
+      },
+      "description": "Requested capability must be a subset of granted capability.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "requested_capabilities": [
+              "READ"
+            ],
+            "granted_capabilities": [
+              "READ",
+              "QUERY"
+            ]
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "requested_capabilities": [
+              "DELETE"
+            ],
+            "granted_capabilities": [
+              "READ"
+            ]
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-AUTH-004",
+      "section_id": "CDX-LAW-001-05-04",
+      "title": "No self-escalation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "in",
+          "path": "action",
+          "values": [
+            "GRANT_PERMISSION",
+            "MODIFY_AUTHORITY",
+            "MODIFY_SECURITY_POLICY"
+          ]
+        },
+        "then": {
+          "op": "equals",
+          "path": "actor_class",
+          "value": "HUMAN"
+        }
+      },
+      "description": "Artificial principals may not self-escalate or mutate authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "action": "GRANT_PERMISSION",
+            "actor_class": "HUMAN"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "action": "GRANT_PERMISSION",
+            "actor_class": "AGENT"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-DELEG-001",
+      "section_id": "CDX-LAW-001-05-05",
+      "title": "Delegation subset rule",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "subset",
+        "path": "delegated_capabilities",
+        "of_path": "delegator_capabilities"
+      },
+      "description": "Delegation may not exceed delegator capability.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegated_capabilities": [
+              "READ"
+            ],
+            "delegator_capabilities": [
+              "READ",
+              "QUERY"
+            ]
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegated_capabilities": [
+              "DELETE"
+            ],
+            "delegator_capabilities": [
+              "READ"
+            ]
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-05-06",
+      "section_id": "CDX-LAW-001-05-06",
+      "title": "Delegation provenance",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "delegation_id"
+          },
+          {
+            "op": "exists",
+            "path": "parent_authority_ref"
+          },
+          {
+            "op": "exists",
+            "path": "delegator_principal_id"
+          }
+        ]
+      },
+      "description": "Delegation provenance must be reconstructable.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegation_id": "D1",
+            "parent_authority_ref": "A1",
+            "delegator_principal_id": "P1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegation_id": "D1"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-05-07",
+      "section_id": "CDX-LAW-001-05-07",
+      "title": "Bounded recursion",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "lte",
+        "path": "delegation_depth",
+        "other_path": "max_delegation_depth"
+      },
+      "description": "Delegation recursion must remain bounded.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegation_depth": 1,
+            "max_delegation_depth": 2
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegation_depth": 3,
+            "max_delegation_depth": 2
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-05-08",
+      "section_id": "CDX-LAW-001-05-08",
+      "title": "Non-transitive trust",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CAPABILITY_DELEGATION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "delegated_action",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "explicit_trust_binding",
+          "value": true
+        }
+      },
+      "description": "Trust is not automatically transitive through delegation.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegated_action": true,
+            "explicit_trust_binding": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CAPABILITY_DELEGATION",
+            "delegated_action": true,
+            "explicit_trust_binding": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-Z0-001",
+      "section_id": "CDX-LAW-001-06-02",
+      "title": "Human Personal Domain",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "BOUNDARY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "not_in",
+        "path": "target_zone",
+        "values": [
+          "Z0"
+        ]
+      },
+      "description": "Non-human execution is denied against the Human Personal Domain.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "BOUNDARY",
+            "target_zone": "Z4"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "BOUNDARY",
+            "target_zone": "Z0"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-06-04",
+      "section_id": "CDX-LAW-001-06-04",
+      "title": "Boundary event",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "BOUNDARY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "boundary_crossing",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "exists",
+              "path": "boundary_event_id"
+            },
+            {
+              "op": "exists",
+              "path": "from_zone"
+            },
+            {
+              "op": "exists",
+              "path": "to_zone"
+            }
+          ]
+        }
+      },
+      "description": "Every boundary crossing must create a boundary event.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "BOUNDARY",
+            "boundary_crossing": true,
+            "boundary_event_id": "B1",
+            "from_zone": "Z4",
+            "to_zone": "Z7"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "BOUNDARY",
+            "boundary_crossing": true,
+            "from_zone": "Z4"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-06-05",
+      "section_id": "CDX-LAW-001-06-05",
+      "title": "Unknown boundary state",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "BOUNDARY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "not_equals_value",
+            "path": "target_zone",
+            "value": "UNKNOWN"
+          },
+          {
+            "op": "not_equals_value",
+            "path": "data_class",
+            "value": "UNKNOWN"
+          }
+        ]
+      },
+      "description": "Unknown boundary state fails closed.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "BOUNDARY",
+            "target_zone": "Z4",
+            "data_class": "INTERNAL"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "BOUNDARY",
+            "target_zone": "UNKNOWN",
+            "data_class": "INTERNAL"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-07-01",
+      "section_id": "CDX-LAW-001-07-01",
+      "title": "Dataset Passport",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "DATA",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "dataset_passport.right_to_use"
+          },
+          {
+            "op": "exists",
+            "path": "dataset_passport.security_class"
+          },
+          {
+            "op": "exists",
+            "path": "dataset_passport.epistemic_quality"
+          },
+          {
+            "op": "exists",
+            "path": "dataset_passport.model_suitability"
+          },
+          {
+            "op": "exists",
+            "path": "dataset_passport.purpose"
+          }
+        ]
+      },
+      "description": "Dataset admission requires an independent multidimensional passport.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "DATA",
+            "dataset_passport": {
+              "right_to_use": "YES",
+              "security_class": "INTERNAL",
+              "epistemic_quality": "Q1",
+              "model_suitability": "YES",
+              "purpose": "P"
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "DATA",
+            "dataset_passport": {
+              "right_to_use": "YES"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-07-08",
+      "section_id": "CDX-LAW-001-07-08",
+      "title": "Retention and deletion authority",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "DATA",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "in",
+          "path": "action",
+          "values": [
+            "DELETE",
+            "RETENTION_CHANGE"
+          ]
+        },
+        "then": {
+          "op": "exists",
+          "path": "data_lifecycle_authority_ref"
+        }
+      },
+      "description": "Retention/deletion mutation requires explicit authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "DATA",
+            "action": "DELETE",
+            "data_lifecycle_authority_ref": "A1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "DATA",
+            "action": "DELETE"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-CONTENT-001",
+      "section_id": "CDX-LAW-001-08-01",
+      "title": "Content-Authority Firewall",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONTENT_MEMORY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "input_untrusted",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "equals",
+              "path": "authority_state_changed",
+              "value": false
+            },
+            {
+              "op": "equals",
+              "path": "security_policy_changed",
+              "value": false
+            }
+          ]
+        }
+      },
+      "description": "Content may change knowledge state, never authority state.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "input_untrusted": true,
+            "authority_state_changed": false,
+            "security_policy_changed": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "input_untrusted": true,
+            "authority_state_changed": true,
+            "security_policy_changed": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-MEM-001",
+      "section_id": "CDX-LAW-001-08-04",
+      "title": "Memory is privileged persistence",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONTENT_MEMORY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "action",
+          "value": "MEMORY_WRITE"
+        },
+        "then": {
+          "op": "equals",
+          "path": "memory_write_authorized",
+          "value": true
+        }
+      },
+      "description": "Memory write is privileged persistence.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "action": "MEMORY_WRITE",
+            "memory_write_authorized": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "action": "MEMORY_WRITE",
+            "memory_write_authorized": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-08-06",
+      "section_id": "CDX-LAW-001-08-06",
+      "title": "Cross-project memory",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONTENT_MEMORY",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "cross_project_memory",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "equals",
+              "path": "cross_project_memory_authorized",
+              "value": true
+            },
+            {
+              "op": "exists",
+              "path": "target_project_id"
+            }
+          ]
+        }
+      },
+      "description": "Cross-project memory requires explicit authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "cross_project_memory": true,
+            "cross_project_memory_authorized": true,
+            "target_project_id": "P2"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONTENT_MEMORY",
+            "cross_project_memory": true,
+            "cross_project_memory_authorized": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-09-01",
+      "section_id": "CDX-LAW-001-09-01",
+      "title": "Model registration",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "MODEL_AGENT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "model_registered",
+        "value": true
+      },
+      "description": "Models used in governed execution must be registered.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "model_registered": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "model_registered": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-09-03",
+      "section_id": "CDX-LAW-001-09-03",
+      "title": "Agent Manifest",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "MODEL_AGENT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "agent_manifest.principal_id"
+          },
+          {
+            "op": "exists",
+            "path": "agent_manifest.allowed_actions"
+          },
+          {
+            "op": "exists",
+            "path": "agent_manifest.tool_scope"
+          },
+          {
+            "op": "exists",
+            "path": "agent_manifest.max_delegation_depth"
+          }
+        ]
+      },
+      "description": "Agent Manifest is mandatory.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "agent_manifest": {
+              "principal_id": "A",
+              "allowed_actions": [
+                "READ"
+              ],
+              "tool_scope": [
+                "T"
+              ],
+              "max_delegation_depth": 1
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "agent_manifest": {
+              "principal_id": "A"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-DENY-001",
+      "section_id": "CDX-LAW-001-09-04",
+      "title": "Missing permission denies",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "MODEL_AGENT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "contains",
+        "path": "granted_permissions",
+        "value_path": "required_permission"
+      },
+      "description": "Missing permission denies.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "granted_permissions": [
+              "READ"
+            ],
+            "required_permission": "READ"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "granted_permissions": [
+              "READ"
+            ],
+            "required_permission": "DELETE"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-09-06",
+      "section_id": "CDX-LAW-001-09-06",
+      "title": "Inter-agent authentication",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "MODEL_AGENT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "equals",
+            "path": "sender_authenticated",
+            "value": true
+          },
+          {
+            "op": "equals",
+            "path": "receiver_authenticated",
+            "value": true
+          }
+        ]
+      },
+      "description": "Inter-agent calls require authenticated endpoints.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "sender_authenticated": true,
+            "receiver_authenticated": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "sender_authenticated": true,
+            "receiver_authenticated": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-09-08",
+      "section_id": "CDX-LAW-001-09-08",
+      "title": "Rogue-agent containment",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "MODEL_AGENT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "rogue_or_compromised",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "quarantined",
+          "value": true
+        }
+      },
+      "description": "Rogue/compromised agents must be contained.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "rogue_or_compromised": true,
+            "quarantined": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "MODEL_AGENT",
+            "rogue_or_compromised": true,
+            "quarantined": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-TOOL-001",
+      "section_id": "CDX-LAW-001-10-01",
+      "title": "Tool admission",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "TOOL_CONNECTOR",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "equals",
+            "path": "tool_registered",
+            "value": true
+          },
+          {
+            "op": "equals",
+            "path": "tool_admitted",
+            "value": true
+          }
+        ]
+      },
+      "description": "Tool use requires admission.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "tool_registered": true,
+            "tool_admitted": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "tool_registered": true,
+            "tool_admitted": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-TOOL-002",
+      "section_id": "CDX-LAW-001-10-02",
+      "title": "Tool availability is not permission",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "TOOL_CONNECTOR",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "tool_available",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "tool_permission_granted",
+          "value": true
+        }
+      },
+      "description": "Tool availability is not permission.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "tool_available": true,
+            "tool_permission_granted": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "tool_available": true,
+            "tool_permission_granted": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-10-04",
+      "section_id": "CDX-LAW-001-10-04",
+      "title": "Egress control",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "TOOL_CONNECTOR",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "external_egress",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "equals",
+              "path": "egress_destination_allowed",
+              "value": true
+            },
+            {
+              "op": "equals",
+              "path": "egress_data_allowed",
+              "value": true
+            }
+          ]
+        }
+      },
+      "description": "External egress requires destination and data clearance.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "external_egress": true,
+            "egress_destination_allowed": true,
+            "egress_data_allowed": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "external_egress": true,
+            "egress_destination_allowed": false,
+            "egress_data_allowed": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-10-06",
+      "section_id": "CDX-LAW-001-10-06",
+      "title": "Disable path",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "TOOL_CONNECTOR",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "disable_path_available",
+        "value": true
+      },
+      "description": "Every admitted external execution path requires a disable path.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "disable_path_available": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "TOOL_CONNECTOR",
+            "disable_path_available": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-11-02",
+      "section_id": "CDX-LAW-001-11-02",
+      "title": "Source and dependency inventory",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SUPPLY_CHAIN",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "exists",
+        "path": "dependency_inventory"
+      },
+      "description": "Source/dependency inventory is required.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "dependency_inventory": []
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "dependency_inventory": null
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-11-03",
+      "section_id": "CDX-LAW-001-11-03",
+      "title": "Build provenance",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SUPPLY_CHAIN",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "build.source_commit"
+          },
+          {
+            "op": "exists",
+            "path": "build.builder_identity"
+          },
+          {
+            "op": "exists",
+            "path": "build.artifact_hash"
+          }
+        ]
+      },
+      "description": "Build provenance must identify source, builder and artifact.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "build": {
+              "source_commit": "abc",
+              "builder_identity": "ci",
+              "artifact_hash": "sha256:x"
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "build": {
+              "source_commit": "abc"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-11-05",
+      "section_id": "CDX-LAW-001-11-05",
+      "title": "Dependency substitution",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "SUPPLY_CHAIN",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "dependency_substitution",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "substitution_approved",
+          "value": true
+        }
+      },
+      "description": "Dependency substitution requires explicit approval.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "dependency_substitution": true,
+            "substitution_approved": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "SUPPLY_CHAIN",
+            "dependency_substitution": true,
+            "substitution_approved": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-CRED-001",
+      "section_id": "CDX-LAW-001-12-01",
+      "title": "Credential isolation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CREDENTIAL_CRYPTO",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "credential.workload_id"
+          },
+          {
+            "op": "exists",
+            "path": "credential.scope"
+          },
+          {
+            "op": "equals",
+            "path": "credential.isolated",
+            "value": true
+          }
+        ]
+      },
+      "description": "Credentials must be isolated to workload/scope.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "credential": {
+              "workload_id": "W1",
+              "scope": [
+                "READ"
+              ],
+              "isolated": true
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "credential": {
+              "workload_id": "W1",
+              "scope": [
+                "READ"
+              ],
+              "isolated": false
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-12-03",
+      "section_id": "CDX-LAW-001-12-03",
+      "title": "Credential inventory",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CREDENTIAL_CRYPTO",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "credential_registered",
+        "value": true
+      },
+      "description": "Credential inventory is mandatory.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "credential_registered": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "credential_registered": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-SECRET-001",
+      "section_id": "CDX-LAW-001-12-04",
+      "title": "Secret prohibition",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CREDENTIAL_CRYPTO",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "plaintext_secret_detected",
+        "value": false
+      },
+      "description": "Plaintext secrets are prohibited in governed code/evidence surfaces.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "plaintext_secret_detected": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CREDENTIAL_CRYPTO",
+            "plaintext_secret_detected": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-01",
+      "section_id": "CDX-LAW-001-13-01",
+      "title": "Continuous authorization",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "equals",
+            "path": "authorization_current",
+            "value": true
+          },
+          {
+            "op": "exists",
+            "path": "authorization_decision_id"
+          }
+        ]
+      },
+      "description": "Authorization must be current at execution time.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "authorization_current": true,
+            "authorization_decision_id": "D1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "authorization_current": false,
+            "authorization_decision_id": "D1"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-02",
+      "section_id": "CDX-LAW-001-13-02",
+      "title": "Mandatory gate sequence",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "mandatory_gates_passed",
+        "value": true
+      },
+      "description": "Required stage gates must pass before execution.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "mandatory_gates_passed": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "mandatory_gates_passed": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-03",
+      "section_id": "CDX-LAW-001-13-03",
+      "title": "Finite decision grammar",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "in",
+        "path": "decision",
+        "values": [
+          "ALLOW",
+          "ALLOW_WITH_CONTROLS",
+          "REQUIRE_HUMAN",
+          "QUARANTINE",
+          "DENY",
+          "SECURITY_STOP",
+          "CONSTITUTIONAL_STOP"
+        ]
+      },
+      "description": "Runtime decision must use finite grammar.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "decision": "DENY"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "decision": "MAYBE"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-04",
+      "section_id": "CDX-LAW-001-13-04",
+      "title": "Runtime policy mediation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "equals",
+            "path": "policy_evaluated",
+            "value": true
+          },
+          {
+            "op": "exists",
+            "path": "policy_version"
+          }
+        ]
+      },
+      "description": "Runtime action requires policy mediation.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "policy_evaluated": true,
+            "policy_version": "1.0.0"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "policy_evaluated": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-FAILCLOSED-001",
+      "section_id": "CDX-LAW-001-13-05",
+      "title": "Fail closed",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "evaluation_error",
+          "value": true
+        },
+        "then": {
+          "op": "in",
+          "path": "decision",
+          "values": [
+            "DENY",
+            "REQUIRE_HUMAN",
+            "QUARANTINE",
+            "SECURITY_STOP",
+            "CONSTITUTIONAL_STOP"
+          ]
+        }
+      },
+      "description": "Evaluation error must fail closed.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "evaluation_error": true,
+            "decision": "DENY"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "evaluation_error": true,
+            "decision": "ALLOW"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-POLICY-001",
+      "section_id": "CDX-LAW-001-13-06",
+      "title": "Policy pinning",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "policy_version"
+          },
+          {
+            "op": "exists",
+            "path": "policy_hash"
+          }
+        ]
+      },
+      "description": "Decision must pin policy version and hash.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "policy_version": "1.0.0",
+            "policy_hash": "sha256:x"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "policy_version": "1.0.0"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-07",
+      "section_id": "CDX-LAW-001-13-07",
+      "title": "Restrictive emergency overlay",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "emergency_overlay",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "overlay_expands_authority",
+          "value": false
+        }
+      },
+      "description": "Emergency overlay may only restrict authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "emergency_overlay": true,
+            "overlay_expands_authority": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "emergency_overlay": true,
+            "overlay_expands_authority": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-08",
+      "section_id": "CDX-LAW-001-13-08",
+      "title": "Reconciliation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "execution_completed",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "reconciliation_completed",
+          "value": true
+        }
+      },
+      "description": "Completed execution requires reconciliation.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "execution_completed": true,
+            "reconciliation_completed": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "execution_completed": true,
+            "reconciliation_completed": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-13-09",
+      "section_id": "CDX-LAW-001-13-09",
+      "title": "Scenario isolation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "RUNTIME_AUTH",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "scenario_mode",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "equals",
+              "path": "production_state_mutation",
+              "value": false
+            },
+            {
+              "op": "equals",
+              "path": "external_effect",
+              "value": false
+            }
+          ]
+        }
+      },
+      "description": "Scenario execution must remain isolated from production/external effects.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "scenario_mode": true,
+            "production_state_mutation": false,
+            "external_effect": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "RUNTIME_AUTH",
+            "scenario_mode": true,
+            "production_state_mutation": true,
+            "external_effect": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-EFFECT-001",
+      "section_id": "CDX-LAW-001-14-04",
+      "title": "External-effect gate",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EXTERNAL_EFFECT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "external_effect",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "equals",
+              "path": "external_effect_gate_passed",
+              "value": true
+            },
+            {
+              "op": "exists",
+              "path": "release_decision_id"
+            }
+          ]
+        }
+      },
+      "description": "External effect requires release gate.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "external_effect": true,
+            "external_effect_gate_passed": true,
+            "release_decision_id": "R1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "external_effect": true,
+            "external_effect_gate_passed": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-14-05",
+      "section_id": "CDX-LAW-001-14-05",
+      "title": "Reversibility classification",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EXTERNAL_EFFECT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "in",
+        "path": "reversibility_class",
+        "values": [
+          "REVERSIBLE",
+          "PARTIALLY_REVERSIBLE",
+          "IRREVERSIBLE",
+          "UNKNOWN"
+        ]
+      },
+      "description": "Consequential action requires reversibility classification.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "reversibility_class": "REVERSIBLE"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "reversibility_class": "NONE"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-14-06",
+      "section_id": "CDX-LAW-001-14-06",
+      "title": "Revocation during execution",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EXTERNAL_EFFECT",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "revocation_check_passed",
+        "value": true
+      },
+      "description": "Execution must remain revocable/observe current revocation state.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "revocation_check_passed": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EXTERNAL_EFFECT",
+            "revocation_check_passed": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-SPETL-001",
+      "section_id": "CDX-LAW-001-15-01",
+      "title": "SPETL requirement",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EVIDENCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "consequential",
+          "value": true
+        },
+        "then": {
+          "op": "exists",
+          "path": "spetl_event_id"
+        }
+      },
+      "description": "Consequential action requires SPETL evidence.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EVIDENCE",
+            "consequential": true,
+            "spetl_event_id": "E1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EVIDENCE",
+            "consequential": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-15-02",
+      "section_id": "CDX-LAW-001-15-02",
+      "title": "Correlation and causation",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EVIDENCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "correlation_id"
+          },
+          {
+            "op": "exists",
+            "path": "causation_id"
+          }
+        ]
+      },
+      "description": "Trace events require correlation and causation identifiers.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EVIDENCE",
+            "correlation_id": "C1",
+            "causation_id": "K1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EVIDENCE",
+            "correlation_id": "C1"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-EVID-001",
+      "section_id": "CDX-LAW-001-15-03",
+      "title": "Append-oriented history",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EVIDENCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "evidence_append_only",
+        "value": true
+      },
+      "description": "Evidence history must be append-oriented.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EVIDENCE",
+            "evidence_append_only": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EVIDENCE",
+            "evidence_append_only": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-15-05",
+      "section_id": "CDX-LAW-001-15-05",
+      "title": "Trace directions",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EVIDENCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "trace.actor"
+          },
+          {
+            "op": "exists",
+            "path": "trace.action"
+          },
+          {
+            "op": "exists",
+            "path": "trace.resource"
+          },
+          {
+            "op": "exists",
+            "path": "trace.authority_ref"
+          }
+        ]
+      },
+      "description": "Trace must reconstruct actor/action/resource/authority.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EVIDENCE",
+            "trace": {
+              "actor": "A",
+              "action": "READ",
+              "resource": "R",
+              "authority_ref": "AUTH"
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EVIDENCE",
+            "trace": {
+              "actor": "A"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-15-07",
+      "section_id": "CDX-LAW-001-15-07",
+      "title": "No chain-of-thought requirement",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "EVIDENCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "private_chain_of_thought_required",
+        "value": false
+      },
+      "description": "Auditability shall not require private chain-of-thought.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "EVIDENCE",
+            "private_chain_of_thought_required": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "EVIDENCE",
+            "private_chain_of_thought_required": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-META-001",
+      "section_id": "CDX-LAW-001-16-01",
+      "title": "Control binding",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "ASSURANCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "all_sections_control_bound",
+        "value": true
+      },
+      "description": "Automatable law must bind to controls.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "ASSURANCE",
+            "all_sections_control_bound": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "ASSURANCE",
+            "all_sections_control_bound": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-META-002",
+      "section_id": "CDX-LAW-001-16-02",
+      "title": "Audit binding",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "ASSURANCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "all_automatable_controls_audited",
+        "value": true
+      },
+      "description": "Automatable controls must bind to executable audits.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "ASSURANCE",
+            "all_automatable_controls_audited": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "ASSURANCE",
+            "all_automatable_controls_audited": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-META-003",
+      "section_id": "CDX-LAW-001-16-03",
+      "title": "Auditability state",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "ASSURANCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "auditability_valid",
+        "value": true
+      },
+      "description": "Every § requires valid auditability state.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "ASSURANCE",
+            "auditability_valid": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "ASSURANCE",
+            "auditability_valid": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-16-06",
+      "section_id": "CDX-LAW-001-16-06",
+      "title": "Regression of discovered failures",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "ASSURANCE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "resolved_control_failure",
+          "value": true
+        },
+        "then": {
+          "op": "exists",
+          "path": "regression_test_ref"
+        }
+      },
+      "description": "Resolved failures require regression coverage.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "ASSURANCE",
+            "resolved_control_failure": true,
+            "regression_test_ref": "T1"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "ASSURANCE",
+            "resolved_control_failure": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-17-01",
+      "section_id": "CDX-LAW-001-17-01",
+      "title": "Severity grammar",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "INCIDENT_EXCEPTION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "in",
+        "path": "severity",
+        "values": [
+          "INFO",
+          "HYGIENE",
+          "DRIFT",
+          "CONTRADICTION",
+          "CONTROL_DEFECT",
+          "SECURITY_STOP",
+          "CONSTITUTIONAL_STOP"
+        ]
+      },
+      "description": "Findings must use finite severity grammar.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "severity": "DRIFT"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "severity": "HIGH"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-17-02",
+      "section_id": "CDX-LAW-001-17-02",
+      "title": "Security Stop",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "INCIDENT_EXCEPTION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "severity",
+          "value": "SECURITY_STOP"
+        },
+        "then": {
+          "op": "in",
+          "path": "decision",
+          "values": [
+            "SECURITY_STOP",
+            "DENY",
+            "QUARANTINE"
+          ]
+        }
+      },
+      "description": "Security Stop cannot continue unrestricted execution.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "severity": "SECURITY_STOP",
+            "decision": "SECURITY_STOP"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "severity": "SECURITY_STOP",
+            "decision": "ALLOW"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-EXC-001",
+      "section_id": "CDX-LAW-001-17-06",
+      "title": "Exceptions",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "INCIDENT_EXCEPTION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "exists",
+            "path": "exception.id"
+          },
+          {
+            "op": "exists",
+            "path": "exception.owner"
+          },
+          {
+            "op": "exists",
+            "path": "exception.scope"
+          },
+          {
+            "op": "exists",
+            "path": "exception.expires_at"
+          },
+          {
+            "op": "exists",
+            "path": "exception.justification"
+          }
+        ]
+      },
+      "description": "Exceptions require identity, owner, scope, expiry and justification.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "exception": {
+              "id": "X1",
+              "owner": "H",
+              "scope": "S",
+              "expires_at": "2099-01-01T00:00:00Z",
+              "justification": "J"
+            }
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "exception": {
+              "id": "X1"
+            }
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-17-07",
+      "section_id": "CDX-LAW-001-17-07",
+      "title": "Expired exception",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "INCIDENT_EXCEPTION",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "equals",
+        "path": "exception_expired",
+        "value": false
+      },
+      "description": "Expired exception cannot authorize action.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "exception_expired": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "INCIDENT_EXCEPTION",
+            "exception_expired": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-18-03",
+      "section_id": "CDX-LAW-001-18-03",
+      "title": "Suspension",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "LIFECYCLE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "system_suspended",
+          "value": true
+        },
+        "then": {
+          "op": "equals",
+          "path": "consequential_execution",
+          "value": false
+        }
+      },
+      "description": "Suspended systems cannot perform consequential execution.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "LIFECYCLE",
+            "system_suspended": true,
+            "consequential_execution": false
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "LIFECYCLE",
+            "system_suspended": true,
+            "consequential_execution": true
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-18-06",
+      "section_id": "CDX-LAW-001-18-06",
+      "title": "Orphan detection",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "LIFECYCLE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "asset_active",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "exists",
+              "path": "asset_owner"
+            },
+            {
+              "op": "equals",
+              "path": "asset_registered",
+              "value": true
+            }
+          ]
+        }
+      },
+      "description": "Active assets require owner and registration.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "LIFECYCLE",
+            "asset_active": true,
+            "asset_owner": "H",
+            "asset_registered": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "LIFECYCLE",
+            "asset_active": true,
+            "asset_registered": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-VERSION-001",
+      "section_id": "CDX-LAW-001-19-02",
+      "title": "Versioning",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONSTITUTIONAL_CHANGE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "semver",
+        "path": "version"
+      },
+      "description": "Constitutional/policy artifacts require explicit semantic version.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "version": "1.2.3"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "version": "latest"
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-19-04",
+      "section_id": "CDX-LAW-001-19-04",
+      "title": "Regulatory and standards drift",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONSTITUTIONAL_CHANGE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "all",
+        "rules": [
+          {
+            "op": "equals",
+            "path": "regulatory_drift_monitor_active",
+            "value": true
+          },
+          {
+            "op": "exists",
+            "path": "last_drift_check_at"
+          }
+        ]
+      },
+      "description": "Regulatory/standards drift monitoring must remain active.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "regulatory_drift_monitor_active": true,
+            "last_drift_check_at": "2026-09-25T00:00:00Z"
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "regulatory_drift_monitor_active": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    },
+    {
+      "control_id": "CDX-CTL-DRAFTING-001",
+      "section_id": "CDX-LAW-001-19-06",
+      "title": "Anti-bloat rule",
+      "status": "IMPLEMENTED_REFERENCE_RUNTIME",
+      "enforcement_surface": "CONSTITUTIONAL_CHANGE",
+      "decision_on_fail": "DENY",
+      "predicate": {
+        "op": "implies",
+        "if": {
+          "op": "equals",
+          "path": "new_section_proposed",
+          "value": true
+        },
+        "then": {
+          "op": "all",
+          "rules": [
+            {
+              "op": "exists",
+              "path": "normative_type"
+            },
+            {
+              "op": "equals",
+              "path": "distinct_normative_effect",
+              "value": true
+            }
+          ]
+        }
+      },
+      "description": "New §§ require distinct normative effect; implementation detail belongs below the Act.",
+      "evidence_requirements": [
+        "policy_decision",
+        "SPETL decision event"
+      ],
+      "test_vectors": [
+        {
+          "name": "allow",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "new_section_proposed": true,
+            "normative_type": "DUTY",
+            "distinct_normative_effect": true
+          },
+          "expected": "ALLOW"
+        },
+        {
+          "name": "deny",
+          "context": {
+            "surface": "CONSTITUTIONAL_CHANGE",
+            "new_section_proposed": true,
+            "normative_type": "DUTY",
+            "distinct_normative_effect": false
+          },
+          "expected": "DENY"
+        }
+      ]
+    }
+  ]
+}
