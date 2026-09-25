@@ -1,0 +1,22 @@
+name: Conductellence Binding Audit
+
+on:
+  push:
+    branches: [main]
+    paths: ['.security/conductellence.json']
+  pull_request:
+    branches: [main]
+    paths: ['.security/conductellence.json']
+
+permissions:
+  contents: read
+
+jobs:
+  binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify binding
+        run: |
+          test -f .security/conductellence.json
+          grep -q '"authority_ref": "CDX-SYS-001"' .security/conductellence.json || grep -q '"authority_ref":"CDX-SYS-001"' .security/conductellence.json
