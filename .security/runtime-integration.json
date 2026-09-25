@@ -1,0 +1,26 @@
+{
+  "schema": "cdx.runtime-integration/v1.0",
+  "system_id": "CDX-EST-012",
+  "authority_ref": "CDX-SYS-001",
+  "state": "VERIFIED_REFERENCE_RUNTIME",
+  "enforcement_points": [
+    "REPOSITORY_CI_BINDING"
+  ],
+  "policy_version": "1.0.0",
+  "spetl_mode": "REQUIRED",
+  "tests": {
+    "allow": true,
+    "deny": true,
+    "policy_unavailable": true
+  },
+  "coverage_scope": [
+    "REPOSITORY_CI"
+  ],
+  "runtime_class": "REFERENCE_REPOSITORY_GUARD",
+  "verified_at": "2026-09-25",
+  "verification_evidence": [
+    ".github/workflows/conductellence-binding-audit.yml",
+    ".security/conductellence-runtime.py --selftest",
+    "bundle_blob:55dbcdac2f822b59a5a5f0f19eeadfa61d2c7ed0"
+  ]
+}
