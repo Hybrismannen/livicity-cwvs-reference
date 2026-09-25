@@ -1,9 +1,18 @@
 {
-  "schema": "cdx.system-binding/v1.0",
+  "schema": "cdx.system-binding/v1.1",
   "authority_ref": "CDX-SYS-001",
   "law_id": "CDX-LAW-001",
   "binding_state": "BOUND_CI_MONITORED",
   "binding_audit_workflow": ".github/workflows/conductellence-binding-audit.yml",
-  "runtime_integration_state": "NOT_VERIFIED",
-  "updated_at": "2026-09-25"
+  "runtime_integration_state": "VERIFIED_REFERENCE_RUNTIME",
+  "updated_at": "2026-09-25",
+  "system_repository": "Hybrismannen/livicity-cwvs-reference",
+  "authority_repository": "Hybrismannen/Conductellence-",
+  "policy_bundle_version": "1.0.0",
+  "policy_bundle_blob_sha": "55dbcdac2f822b59a5a5f0f19eeadfa61d2c7ed0",
+  "runtime_integration_ref": ".security/runtime-integration.json",
+  "authority_mutation": "HUMAN_RESERVED",
+  "missing_permission": "DENY",
+  "content_may_modify_authority": false,
+  "evidence_plane": "SPETL_REQUIRED_FOR_CONSEQUENTIAL_RUNTIME"
 }
