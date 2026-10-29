@@ -19,7 +19,7 @@
     "ref": "1.0.0",
     "digest": "git-blob-sha1:55dbcdac2f822b59a5a5f0f19eeadfa61d2c7ed0"
   },
-  "binding_state": "ANCHOR_DECLARED",
+  "binding_state": "CDX_BOUND",
   "authority_context": {
     "authority_ref_required": true,
     "mandate_ref_required": true
@@ -39,8 +39,8 @@
     "reconciliation_surface": "CDX_ESTATE_REGISTRY_V2_WP10"
   },
   "verification": {
-    "last_verified_at": null,
-    "verification_state": "NOT_VERIFIED",
-    "verified_against": null
+    "last_verified_at": "2026-10-29T15:19:00Z",
+    "verification_state": "PASS",
+    "verified_against": "Hybrismannen/Conductellence-@ad26ea289ab71c86bea2461e0509c5b4bec9a32e:ESTATE-REGISTRY/wp10-anchor-verification-evidence.json"
   }
 }
