@@ -1,0 +1,46 @@
+{
+  "schema": "cdx.anchor/v1",
+  "system_short_name": "CDX",
+  "governed_surface": {
+    "kind": "REPOSITORY",
+    "identity": "Hybrismannen/livicity-cwvs-reference",
+    "repository": "Hybrismannen/livicity-cwvs-reference",
+    "system_id": "CDX-EST-012"
+  },
+  "cdx_authority": {
+    "repository": "Hybrismannen/Conductellence-",
+    "canonical_name": "Conductellence",
+    "short_name": "CDX"
+  },
+  "law_id": "CDX-LAW-001",
+  "binding_mode": "PINNED_RELEASE",
+  "policy_pin": {
+    "ref_type": "RELEASE",
+    "ref": "1.0.0",
+    "digest": "git-blob-sha1:55dbcdac2f822b59a5a5f0f19eeadfa61d2c7ed0"
+  },
+  "binding_state": "ANCHOR_DECLARED",
+  "authority_context": {
+    "authority_ref_required": true,
+    "mandate_ref_required": true
+  },
+  "local_enforcement": {
+    "owner": "Hybrismannen/livicity-cwvs-reference",
+    "points": [],
+    "fail_closed_for_consequential_effects": true
+  },
+  "conformance": {
+    "adapter_contract": "CDX-RUNTIME-001",
+    "runtime_state": "NOT_REQUIRED_BY_CURRENT_ROLE"
+  },
+  "evidence": {
+    "spetl_required": false,
+    "preservation_target": "WP10_VERIFICATION_PENDING",
+    "reconciliation_surface": "CDX_ESTATE_REGISTRY_V2_WP10"
+  },
+  "verification": {
+    "last_verified_at": null,
+    "verification_state": "NOT_VERIFIED",
+    "verified_against": null
+  }
+}
