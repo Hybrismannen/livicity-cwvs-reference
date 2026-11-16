@@ -1,0 +1,37 @@
+{
+  "schema": "ffos.devops.discovery-hook/v1.1",
+  "hook_id": "FFOS-DEVOPS-HOOK-001",
+  "repository": "Hybrismannen/livicity-cwvs-reference",
+  "model": {
+    "id": "FFOS-DEVOPS-OM-001",
+    "version": "1.1",
+    "uri": "https://github.com/Motherpher/FFOS/blob/main/docs/operations/devops/README.md"
+  },
+  "activation": {
+    "default": "OFFER_ONLY",
+    "director_controlled": true,
+    "automatic_activation": false,
+    "for_small_changes": "NORMAL_WORKFLOW",
+    "on_decline": "NORMAL_WORKFLOW",
+    "existing_processes": "UNCHANGED",
+    "choices": [
+      "ACTIVATE",
+      "DECLINE",
+      "DEFER"
+    ]
+  },
+  "cdx_review": {
+    "mode": "CONDITIONAL_DISCOVERY",
+    "cdx_reference": "https://github.com/Hybrismannen/Conductellence-/blob/main/GOVERNANCE/CDX-ESTATE-ANCHOR-STANDARD.md",
+    "canonical_anchor_path": ".cdx/anchor.json",
+    "review_interface": "https://github.com/Motherpher/FFOS/blob/main/docs/operations/devops/CDX-REVIEW-INTERFACE-v1.1.md",
+    "automatic_request": false,
+    "automatic_authorization": false,
+    "anchor_observed": true
+  },
+  "capabilities": {
+    "auto_create_work_package": false,
+    "auto_invoke_cdx": false,
+    "alter_cdx_policy": false
+  }
+}
