@@ -1,0 +1,9 @@
+# OpenAI Google Drive Access — Director Non-Negotiable Create-Only Rule
+
+**Policy:** OAI-DRIVE-APPEND-ONLY-001 v1.0 (2026-11-18). Canonical document: https://docs.google.com/document/d/18nexuzVfOEWwM7vXcPcB1NkjQHsEGKWxZHSqo-qlBRs/edit . Google Drive root folder: `0. Open AI - Access & Privacy Rules`. Read the complete source before any AI-mediated Drive task.
+
+**Existing content is READ ONLY.** AI may READ authorized content and CREATE NEW private files/folders in authorized locations; initial content insertion into a newly created item is permitted as one recorded creation operation. After creation it is protected like existing content. **Default DENY** all AI-initiated modifications, overwrites, moves, renames, trash, permanent deletes, cleanup, deduplication, replacement, sync, permission or sharing changes, metadata mutation, rollback or removal of intermediate files unless the Director explicitly approves the exact target Drive IDs and precise effect in advance. A broad mandate, OAuth permission, general task or previously given approval is insufficient. When in doubt BLOCK and ask.
+
+Before protected effects: identify target IDs and path, preview precise operation and consequences, request itemized approval, bind approval to the exact run and action, enforce it server-side immediately prior to the provider API, audit the pre-effect decision and post-effect result. Missing policy/approval means fail closed. Never transfer private Drive contents into public repositories or unrelated services. Test negative cases for unauthorized edit/delete/trash/move/overwrite/sharing and bulk sync. Instructions and GitHub PRs do not constitute technical enforcement or accepted CDX runtime binding.
+
+**Repo status:** proposed additional policy reference only, pending PR review and adoption. This does not supersede existing repo/constitutional or historical provenance rules.
